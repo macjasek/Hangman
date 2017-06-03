@@ -10,92 +10,43 @@ namespace HangMan
     {
         static void Main(string[] args)
         {
-
             var myWord = new WordsToGuess();
-
             var wordToGuess = myWord.NewWord();
+            var myPlayerList = new PlayerList();
 
-            var wordLen = wordToGuess.Length;
-            var stars = "";
+            Console.WriteLine("Wpisz swoje imię");
+            var myPlayer = myPlayerList.AddPlayerToList(Console.ReadLine());
+            
+            PrintMenu();
 
-            Console.WriteLine($"Zgadnij słowo:");
+            var option = 0;
 
-            for (int i = 0; i < wordLen; i++)
+            do
             {
-                stars += "*";
-            }
-            Console.WriteLine(stars);
-
-            var letter = "x";
-
-
-            var lettersInWordToGuess = wordToGuess.Distinct();
-            var lettersGuessed = new List<char> { };
-            var lines = 0;
-
-            while (true)
-            {
-                letter = Console.ReadLine();
-                
-                if (wordToGuess.Contains(letter))
+                option = int.Parse(Console.ReadLine());
+                switch (option)
                 {
-                    Console.Clear();
-                    Console.WriteLine("Zgadłeś literę");
-                    lettersGuessed.Add(letter[0]);
-                    WriteWord(lettersGuessed, wordToGuess);
-                }
-                else
-                {
-                    Console.WriteLine("Nie odgadłeś litery");
-                    lines++;
-                    if (lines > 8)
-                    {
-                        Console.WriteLine("Przegrałeś");
+                    case 1:
+                        var myGame = new Game();
+                        myGame.PlayGame(myPlayer, wordToGuess);
+                        myPlayerList.PlayersList[myPlayer.Name] = myPlayer.Points;
+
                         break;
-                    }
-                    DrawHangman(lines);
+                    case 2:
+                        myPlayerList.PrintPlayerList();
+                        break;
+                    default:
+                        break;
                 }
 
-                if (lettersInWordToGuess.Count() == lettersGuessed.Count) 
-                {
-                    Console.WriteLine($"Brawo zgadłeś wszystkie litery w słowie {wordToGuess}");
-                    break;
-                }
-
-                Console.WriteLine($"Zgadnij słowo:");
-            }
+                PrintMenu();
+            } while (option != 3);         
         }
 
-        static void WriteWord(List<char> list, string word)
+        static void PrintMenu()
         {
-            for (int i = 0; i < word.Length; i++)
-            {
-                if (!list.Contains(word[i]))
-                {
-                    word = word.Replace(word[i], '*');
-                }
-            }
-            Console.WriteLine(word);
-        }
-
-        static void DrawHangman (int lines)
-        {
-            var hangmanPicture = new string[8];
-            hangmanPicture[0] = "  _______";
-            hangmanPicture[1] = " |/      |";
-            hangmanPicture[2] = " |      (_)";
-            hangmanPicture[3] = @" |      \|/";
-            hangmanPicture[4] = " |       |";
-            hangmanPicture[5] = @" |      / \";
-            hangmanPicture[6] = " |";
-            hangmanPicture[7] = "_|___";
             Console.Clear();
-            for (int i = 0; i < lines; i++)
-            {
-
-                Console.WriteLine(hangmanPicture[i]);
-            }
-
+            Console.WriteLine("1 - Nowa Gra 2-Lista Wyników 3-Wyjście");
         }
     }
 }

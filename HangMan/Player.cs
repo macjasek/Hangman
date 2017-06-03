@@ -8,16 +8,16 @@ namespace HangMan
 {
     class Player
     {
-        string Name { get; set; }
-        int Points { get; set; }
+        public string Name { get; set; }
+        public int Points { get; set; }
 
-        public Player(string name)
+        public Player(string name, int points)
         {
             Name = name;
-            Points = 0;
+            Points = points;
         }
 
-        public void AddPoints(string player)
+        public void AddPoints()
         {
             Points++;
         }
