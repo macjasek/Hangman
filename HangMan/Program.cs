@@ -10,10 +10,11 @@ namespace HangMan
     {
         static void Main(string[] args)
         {
-            var words = new List<string> { "pies", "kot", "taczka", "worek" };
-            Random rnd = new Random();
-            int wordIndex = rnd.Next(0, words.Count);
-            var wordToGuess = words.ElementAt(wordIndex);
+
+            var myWord = new WordsToGuess();
+
+            var wordToGuess = myWord.NewWord();
+
             var wordLen = wordToGuess.Length;
             var stars = "";
 
@@ -30,6 +31,7 @@ namespace HangMan
 
             var lettersInWordToGuess = wordToGuess.Distinct();
             var lettersGuessed = new List<char> { };
+            var lines = 0;
 
             while (true)
             {
@@ -37,6 +39,7 @@ namespace HangMan
                 
                 if (wordToGuess.Contains(letter))
                 {
+                    Console.Clear();
                     Console.WriteLine("Zgadłeś literę");
                     lettersGuessed.Add(letter[0]);
                     WriteWord(lettersGuessed, wordToGuess);
@@ -44,6 +47,13 @@ namespace HangMan
                 else
                 {
                     Console.WriteLine("Nie odgadłeś litery");
+                    lines++;
+                    if (lines > 8)
+                    {
+                        Console.WriteLine("Przegrałeś");
+                        break;
+                    }
+                    DrawHangman(lines);
                 }
 
                 if (lettersInWordToGuess.Count() == lettersGuessed.Count) 
@@ -66,6 +76,26 @@ namespace HangMan
                 }
             }
             Console.WriteLine(word);
+        }
+
+        static void DrawHangman (int lines)
+        {
+            var hangmanPicture = new string[8];
+            hangmanPicture[0] = "  _______";
+            hangmanPicture[1] = " |/      |";
+            hangmanPicture[2] = " |      (_)";
+            hangmanPicture[3] = @" |      \|/";
+            hangmanPicture[4] = " |       |";
+            hangmanPicture[5] = @" |      / \";
+            hangmanPicture[6] = " |";
+            hangmanPicture[7] = "_|___";
+            Console.Clear();
+            for (int i = 0; i < lines; i++)
+            {
+
+                Console.WriteLine(hangmanPicture[i]);
+            }
+
         }
     }
 }
