@@ -10,16 +10,17 @@ namespace HangMan
     class PlayerList
     {
         public Dictionary<string, int> PlayersList {get; set;}
+        public string Path { get; set; }
 
         public PlayerList()
         {
-            var path = @".\PlayerList.txt";
-            if (File.Exists(path))
+            Path = @".\PlayerList.txt";
+            if (File.Exists(Path))
             {
                 //Slownik
                 PlayersList = new Dictionary<string, int>();
                 //Wczytaj listę graczy
-                using (var reader = new StreamReader(path))
+                using (var reader = new StreamReader(Path))
                 {
                     while (!reader.EndOfStream)
                     {
@@ -33,21 +34,31 @@ namespace HangMan
             }
             else
             {
-                File.Create(path);
+                File.Create(Path);
             }
         }
 
         public void SavePlayers()
         {
-            //tu będą się zapisywać gracze
+            using(var writer = File.CreateText(Path))
+            {
+                foreach (var item in PlayersList)
+                {
+                    writer.WriteLine($"{item.Key},{item.Value}");
+                }
+            }
+            
+            
         }
 
         public void PrintPlayerList()
         {
+            Console.Clear();
             foreach (var item in PlayersList)
             {
                 Console.WriteLine($"Gracz: {item.Key} Punkty: {item.Value}");   
             }
+            Console.WriteLine("Przyciśj dowolny klawisz aby kontynuować...");
             Console.ReadKey();
         }
 

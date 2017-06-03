@@ -40,7 +40,9 @@ namespace HangMan
                 }
 
                 PrintMenu();
-            } while (option != 3);         
+            } while (option != 3);
+
+            myPlayerList.SavePlayers();
         }
 
         static void PrintMenu()
